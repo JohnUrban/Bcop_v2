@@ -7,8 +7,9 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 	- version 2, Dec 2023
 
 
-# Version 2 of the Bradysia coprophila reference genome, chromosome-scale scaffolds of all four somatic chromosomes (X, II, III, IV).
-- Bcop_v2 was deposited to NCBI:
+# Version 2 of the Bradysia coprophila reference genome:
+- Chromosome-scale scaffolds of all four somatic chromosomes (X, II, III, IV).
+- Bcop_v2 was deposited to NCBI.
 - The Whole Genome Shotgun project has been deposited at DDBJ/ENA/GenBank under the accession VSDI00000000: version VSDI02000000 (deposited 2022; released Jan 4, 2023). 
 - See BioProjects PRJNA291918 and PRJNA672144; and BioSamples SAMN12533751 and SAMN20343824. 
 - GenBank GCA_014529535.2; WGS VSDI02; release date 2023-01-04.
@@ -16,6 +17,7 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 
 
 # Current directory structure:
+```
 .
 ├── README.md
 ├── bcopv1_bcopv2_map
@@ -30,7 +32,7 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
     │   └── 02-Bradysia_coprophila_repeatmodeler_families_AlternativeAssembly-falcon.fasta
     ├── repeat-annotations-Bcop_v2.0.fasta.out.gff
     └── repeat-annotations-Bcop_v2.0.fasta.tbl
-
+```
 
 # File explanation
 - The "bcopv1_bcopv2_map" directory contains files that map Bcop_v1 to Bcop_v2.
