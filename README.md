@@ -21,16 +21,16 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 .
 ├── README.md
 ├── bcopv1_bcopv2_map
-│   ├── BcopV1_corrected_contigs_on_BcopV2.bed
-│   └── Bcop_v2_from_Bcop_v1-ncbi_corrected.agp
+│   ├── BcopV1_corrected_contigs_on_BcopV2.bed.gz
+│   └── Bcop_v2_from_Bcop_v1-ncbi_corrected.agp.gz
 ├── genes
-│   ├── maker-Bcop_v1_to_v2-geneset-liftOff.gff
-│   └── ncbi-Bcop_v1_to_v2-geneset-liftOff.gff
+│   ├── maker-Bcop_v1_to_v2-geneset-liftOff.gff.gz
+│   └── ncbi-Bcop_v1_to_v2-geneset-liftOff.gff.gz
 └── repeats
     ├── libraries
-    │   ├── 01-Bradysia_coprophila_repeatmodeler_families_BcopV1-canu.fasta
-    │   └── 02-Bradysia_coprophila_repeatmodeler_families_AlternativeAssembly-falcon.fasta
-    ├── repeat-annotations-Bcop_v2.0.fasta.out.gff
+    │   ├── 01-Bradysia_coprophila_repeatmodeler_families_BcopV1-canu.fasta.gz
+    │   └── 02-Bradysia_coprophila_repeatmodeler_families_AlternativeAssembly-falcon.fasta.gz
+    ├── repeat-annotations-Bcop_v2.0.fasta.out.gff.gz
     └── repeat-annotations-Bcop_v2.0.fasta.tbl
 ```
 
