@@ -4,7 +4,7 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 # See preprint for details:
 - https://doi.org/10.1101/2022.11.03.515061
 	- version 1, Nov 2022
-	- version 2, Dec 2023
+	- version 2, Dec 2024
 
 
 # Version 2 of the Bradysia coprophila reference genome:
