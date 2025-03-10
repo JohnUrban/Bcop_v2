@@ -28,7 +28,9 @@ orthofinder -t 16 -a 16 -f proteomes/ 1> ortho.out 2> ortho.err
 Uses grep.py (or grep)
 - After OrthoFinder done, go to Orthogroups subdirectory and run the extraction command.
 	- OrthoFinder/Results_*/Orthogroups
-		- (head -n 1 Orthogroups.tsv ; grep.py -p Orthogroups_SingleCopyOrthologues.txt -f Orthogroups.tsv -c 1 -C 1 ) > Orthogroups_SingleCopyOrthologues.tsv
+		- Notice the following two commands are inside "( )"
+		- ( head -n 1 Orthogroups.tsv ; 
+		    grep.py -p Orthogroups_SingleCopyOrthologues.txt -f Orthogroups.tsv -c 1 -C 1 ) > Orthogroups_SingleCopyOrthologues.tsv
 
 ### STEP5: Run EGGS Processing
 - In process of writing up documentation....
