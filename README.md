@@ -37,12 +37,8 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 │   │   │   ├── 01-process-Drosophila-melanogaster-r6.sh
 │   │   │   ├── 01-process-Pseudolycoriella-hygida.sh
 │   │   │   ├── 02-follow-up-processing-for-all.sh
-│   │   │   ├── 03-follow-up-processing-for-all.sh
-│   │   │   ├── 04-prepare-for-analysis-in-R.ipynb
-│   │   │   ├── 05-follow-up.sh
 │   │   │   ├── EGGS-bash-utility-functions.txt
 │   │   │   ├── README.txt
-│   │   │   ├── bhyg-newnames.txt
 │   │   │   └── further_processing_for_genespace
 │   │   │       ├── README.txt
 │   │   │       ├── further-prep-for-genespace.Aedes_aegypti.sh
@@ -50,6 +46,12 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 │   │   │       ├── further-prep-for-genespace.Bradysia_copriphila.sh
 │   │   │       ├── further-prep-for-genespace.Drosophila_melanogaster-r6.sh
 │   │   │       └── further-prep-for-genespace.Pseudolycoriella_hygida.sh
+│   │   ├── orthofinder-processing
+│   │   │   ├── 03-follow-up-processing-for-all.sh
+│   │   │   ├── 04-prepare-for-analysis-in-R.ipynb
+│   │   │   ├── 05-follow-up.sh
+│   │   │   ├── README.txt
+│   │   │   └── bhyg-newnames.txt
 │   │   └── utilities
 │   │       ├── extractFastxEntries.py
 │   │       ├── fastaFormatter.py
