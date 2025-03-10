@@ -1,67 +1,56 @@
-#2023-10-10
-
+#!/bin/bash
+source EGGS-bash-utility-functions.txt 
 
 ## BEFORE RUNNING:
-## - Some of the processed files produced by the "01-process*.sh" scripts were copied into a shared directory.
-##	- Those files are named in below commands.
-##	- That is not necessary, but one needs to point those commands to those files.
+## - Some of the processed files produced by the "01-process*.sh" scripts or NCBI dataset directories.
+##      - Those files are named in below commands.
+##      - That is not necessary, but one needs to point those commands to those files.
 ## - Once you set up this script to point at the files, you can comment out the "exit" command below (next line).
-exit
 
 
-SHARED=shared_files
+## NCBI Datasets -- set this variable to wherever the NCBI datasets are.
+NCBI_DATASETS=
 
-####################################################################################
-## PROTEIN TO GENE DICTIONARIES
-####################################################################################
-
-
-SCOs=proteomes/OrthoFinder/Results_Oct10/Orthogroups/Orthogroups_SingleCopyOrthologues.tsv
-## Orthogroup	2=african_malaria_mosquito	3=black_fungus_gnat_Brazil	4=black_fungus_gnat_USA	5=fruit_fly_melanogaster	6=yellow_fever_mosquito
-
-# Get Bcop SCOs
-grep.py --file ${SHARED}/bcop-gene-prot-protlen.tsv --patterns ${SCOs} --column 2 --patterns_column 4 > Bcop-SCOs.txt
-
-
-# Get Bhyg SCOs
-grep.py --file ${SHARED}/bhyg-gene-prot-protlen.tsv --patterns ${SCOs} --column 2 --patterns_column 3 > Bhyg-SCOs.txt
-
-
-# Get Dmel SCOs 
-grep.py --file ${SHARED}/dmel-gene-prot-protlen.tsv --patterns ${SCOs} --column 2 --patterns_column 5 > Dmel-SCOs.txt
-
-
-# Get Aedes SCOs
-grep.py --file ${SHARED}/aedes-gene-prot-protlen.tsv --patterns ${SCOs} --column 2 --patterns_column 6 > Aedes-SCOs.txt
-
-
-# Get Anoph SCOs
-grep.py --file ${SHARED}/anoph-gene-prot-protlen.tsv --patterns ${SCOs} --column 2 --patterns_column 2 > Anoph-SCOs.txt
-
-
-####################################################################################
-## GENE LOC BED FILES
-####################################################################################
-
-## Bcop
-grep.py --file ${SHARED}/bcop-all.chrNames.bed --patterns Bcop-SCOs.txt --column 4 --patterns_column 1 > Bcop-SCOs.bed
-
-## Bhyg
-grep.py --file ${SHARED}/bhyg-all.chrNames.bed --patterns Bhyg-SCOs.txt --column 4 --patterns_column 1 > Bhyg-SCOs.bed
-
-# Dmel
-grep.py --file ${SHARED}/dmel-all.chrNames.bed --patterns Dmel-SCOs.txt --column 4 --patterns_column 1 > Dmel-SCOs.bed
-
-# Aedes
-grep.py --file ${SHARED}/aedes-all.chrNames.bed --patterns Aedes-SCOs.txt --column 4 --patterns_column 1 > Aedes-SCOs.bed
-
-# Anopheles
-grep.py --file ${SHARED}/anoph-all.chrNames.bed --patterns Anoph-SCOs.txt --column 4 --patterns_column 1 > Anoph-SCOs.bed
+## GENE PROT PROTLEN TABLES -- UPDATED FUNCTION
+## - I used updated code to recreate some files. 
 
 
 
+## BCOP - Paths from Bcop_v2 Repo::  Bcop_v2/genes/ncbi-Bcop_v1_to_v2-geneset-liftOff.gff AND Bcop_v2/other/Bcop_v2.0.fasta.genome
+get_gene2protein_with_lengths_transtab_from_ncbi_gtf_20231004 ../../../genes/ncbi-Bcop_v1_to_v2-geneset-liftOff.gff > bcop-gene-prot-protlen.tsv
+get_gene_bed_OCL_input_20231004 ../../../genes/ncbi-Bcop_v1_to_v2-geneset-liftOff.gff > bcop-all.chrNames.bed
+cp ../../../other/Bcop_v2.0.fasta.genome  bcop.genome
 
 
-##
-translateTable.py -i bcop_bhyg.paf -d bhyg-newnames.txt -k 1 -v 2 -c 1 --force > bcop_bhyg-newnames.paf 
-awk 'OFS="\t" {print $6,$7,$8,$9,$5,$6,$7,$8,$9,$10,$11,$12}' bcop_bhyg-newnames.paf  >bcop_bcop.paf
+## DMEL
+get_gene2protein_with_lengths_transtab_from_ncbi_gtf_20231004 ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/ncbi_dataset/data/GCF_000001215.4/genomic.gtf > dmel-gene-prot-protlen.tsv
+get_gene_bed_OCL_input_20231004 ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/ncbi_dataset/data/GCF_000001215.4/genomic.gtf > dmel-all.bed
+##grep.py -f ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/seq.sizes.tsv -p ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/chr2acc.tsv --column 1 --patterns_column 2 > dmel-acc.genome
+translateTable.py -i dmel-all.bed -c 1 -d ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/chr2acc.tsv -k 2 -v 1 --force > dmel-all.chrNames.bed 
+##translateTable.py -i dmel-acc.genome -c 1 -d ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/chr2acc.tsv -k 2 -v 1 --force > dmel.genome
+translateTable.py -i ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/seq.sizes.tsv -c 1 -d ${NCBI_DATASETS}/Drosophila_melanogaster-Release6_ncbi/chr2acc.tsv -k 2 -v 1 --force > dmel.genome
+
+## AEDES
+get_gene2protein_with_lengths_transtab_from_ncbi_gtf_20231004 ${NCBI_DATASETS}/Aedes_aegypti/ncbi_dataset/data/GCF_002204515.2/genomic.gtf > aedes-gene-prot-protlen.tsv
+get_gene_bed_OCL_input_20231004 ${NCBI_DATASETS}/Aedes_aegypti/ncbi_dataset/data/GCF_002204515.2/genomic.gtf > aedes-all.bed
+##grep.py -f ${NCBI_DATASETS}/Aedes_aegypti/seq.sizes.tsv -p ${NCBI_DATASETS}/Aedes_aegypti/chr2acc.tsv --column 1 --patterns_column 2 > aedes-acc.genome
+translateTable.py -i aedes-all.bed -c 1 -d ${NCBI_DATASETS}/Aedes_aegypti/chr2acc.tsv -k 2 -v 1 --force > aedes-all.chrNames.bed 
+##translateTable.py -i aedes-acc.genome -c 1 -d ${NCBI_DATASETS}/Aedes_aegypti/chr2acc.tsv -k 2 -v 1 --force > aedes.genome
+translateTable.py -i ${NCBI_DATASETS}/Aedes_aegypti/seq.sizes.tsv -c 1 -d ${NCBI_DATASETS}/Aedes_aegypti/chr2acc.tsv -k 2 -v 1 --force > aedes.genome
+
+## ANOPH
+get_gene2protein_with_lengths_transtab_from_ncbi_gtf_20231004 ${NCBI_DATASETS}/Anopheles_gambiae/ncbi_dataset/data/GCF_000005575.2/genomic.gtf > anoph-gene-prot-protlen.tsv
+get_gene_bed_OCL_input_20231004 ${NCBI_DATASETS}/Anopheles_gambiae/ncbi_dataset/data/GCF_000005575.2/genomic.gtf > anoph-all.bed
+##grep.py -f ${NCBI_DATASETS}/Anopheles_gambiae/seq.sizes.tsv -p ${NCBI_DATASETS}/Anopheles_gambiae/chr2acc.tsv --column 1 --patterns_column 2 > anoph-acc.genome
+translateTable.py -i anoph-all.bed -c 1 -d ${NCBI_DATASETS}/Anopheles_gambiae/chr2acc.tsv -k 2 -v 1 --force > anoph-all.chrNames.bed 
+##translateTable.py -i anoph-acc.genome -c 1 -d ${NCBI_DATASETS}/Anopheles_gambiae/chr2acc.tsv -k 2 -v 1 --force > anoph.genome
+translateTable.py -i ${NCBI_DATASETS}/Anopheles_gambiae/seq.sizes.tsv -c 1 -d ${NCBI_DATASETS}/Anopheles_gambiae/chr2acc.tsv -k 2 -v 1 --force > anoph.genome
+
+## BHYG
+####get_gene2protein_with_lengths_transtab_from_ncbi_gtf_20231004 ${NCBI_DATASETS}/Pseudolycoriella_hygida/ncbi_dataset/data/GCA_029228625.1/genomic.gff > bhyg-gene-prot-protlen.tsv
+cp ${NCBI_DATASETS}/Pseudolycoriella_hygida/gene2protein-with-protlengths-transtab.tsv bhyg-gene-prot-protlen.tsv 
+get_gene_bed_OCL_input_20231004 ${NCBI_DATASETS}/Pseudolycoriella_hygida/ncbi_dataset/data/GCA_029228625.1/genomic.gff  > bhyg-all.bed
+####translateTable.py -i bhyg-all.bed -c 1 -d ${NCBI_DATASETS}/Pseudolycoriella_hygida/chr2acc.tsv -k 2 -v 1 --force > bhyg-all.chrNames.bed 
+translateTable.py -i bhyg-all.bed -c 1 -d ${NCBI_DATASETS}/Pseudolycoriella_hygida/chr2acc.tsv -k 2 -v 1 --force | awk '{sub(" ","_"); sub("chromosome_",""); print}' > bhyg-all.chrNames.bed 
+###translateTable.py -i ${NCBI_DATASETS}/Pseudolycoriella_hygida/seq.sizes.tsv -c 1 -d ${NCBI_DATASETS}/Pseudolycoriella_hygida/chr2acc.tsv -k 2 -v 1 --force > bhyg.genome
+translateTable.py -i ${NCBI_DATASETS}/Pseudolycoriella_hygida/seq.sizes.tsv -c 1 -d ${NCBI_DATASETS}/Pseudolycoriella_hygida/chr2acc.tsv -k 2 -v 1 --force | awk '{sub(" ","_"); sub("chromosome_",""); print}' > bhyg.genome
