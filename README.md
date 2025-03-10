@@ -26,7 +26,9 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 ├── code
 │   ├── EGGS
 │   │   ├── EGGS
-│   │   │   └── EGGS.py
+│   │   │   ├── EGGS-entropy-analysis.ipynb
+│   │   │   ├── EGGS.py
+│   │   │   └── README.txt
 │   │   ├── README.md
 │   │   ├── lave-dotplots
 │   │   │   └── bcopv2_5spp.R
