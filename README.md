@@ -23,9 +23,93 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 ├── bcopv1_bcopv2_map
 │   ├── BcopV1_corrected_contigs_on_BcopV2.bed.gz
 │   └── Bcop_v2_from_Bcop_v1-ncbi_corrected.agp.gz
+├── code
+│   ├── EGGS
+│   │   ├── EGGS
+│   │   │   └── EGGS.py
+│   │   ├── README.md
+│   │   ├── ncbi-dataset-processing
+│   │   │   ├── 01-process-Aedes-aegypti.sh
+│   │   │   ├── 01-process-Anopheles-gambiae.sh
+│   │   │   ├── 01-process-Bradysia-coprophila.sh
+│   │   │   ├── 01-process-Drosophila-melanogaster-r6.sh
+│   │   │   ├── 01-process-Pseudolycoriella-hygida.sh
+│   │   │   ├── 02-follow-up-processing-for-all.sh
+│   │   │   ├── 03-follow-up-processing-for-all.sh
+│   │   │   ├── EGGS-bash-utility-functions.txt
+│   │   │   ├── README.txt
+│   │   │   └── further_processing_for_genespace
+│   │   │       ├── README.txt
+│   │   │       ├── further-prep-for-genespace.Aedes_aegypti.sh
+│   │   │       ├── further-prep-for-genespace.Anopheles_gambiae.sh
+│   │   │       ├── further-prep-for-genespace.Bradysia_copriphila.sh
+│   │   │       ├── further-prep-for-genespace.Drosophila_melanogaster-r6.sh
+│   │   │       └── further-prep-for-genespace.Pseudolycoriella_hygida.sh
+│   │   └── utilities
+│   │       ├── extractFastxEntries.py
+│   │       ├── fastaFormatter.py
+│   │       ├── fxSize.py
+│   │       ├── grep.py
+│   │       ├── setOps.py
+│   │       └── tableFilter.py
+│   ├── HiC-Read-Mapping-Pipeline
+│   │   ├── 01-phase-map.sh
+│   │   ├── 02-partition-chromosomes.sh
+│   │   ├── README.md
+│   │   └── examples
+│   │       ├── phase-map.XO.sh
+│   │       └── phase-map.XpX.sh
+│   ├── SCOPE
+│   │   ├── 01-preprocess
+│   │   │   ├── 01-phase-map.sh
+│   │   │   ├── 02-partition-chromosomes.sh
+│   │   │   ├── README.txt
+│   │   │   └── examples
+│   │   │       ├── phase-map.XO.sh
+│   │   │       └── phase-map.XpX.sh
+│   │   ├── 02-SCOPE
+│   │   │   ├── 01-functions
+│   │   │   │   └── SCOPE-v1.20250307.R
+│   │   │   ├── 02-template
+│   │   │   │   └── SCOPE-pipeline-template.v1.20250307.R
+│   │   │   └── 03-examples-from-paper
+│   │   │       ├── 01-FBRs-and-XpINV
+│   │   │       │   ├── 01-orig-params-update
+│   │   │       │   │   ├── female
+│   │   │       │   │   │   └── Female-FBR-HiC-peak-extraction.originalParamters.template-v20241027_100pm.R
+│   │   │       │   │   └── male
+│   │   │       │   │       └── Male-FBR-HiC-peak-extraction.originalParamters.template-v20241027_100pm.R
+│   │   │       │   └── 02-updated-params-narrow-peaks
+│   │   │       │       ├── female
+│   │   │       │       │   └── Female-FBR-HiC-peak-extraction.newNarrowerParamters.template-v20241027_100pm-updated-v20250307.R
+│   │   │       │       └── male
+│   │   │       │           ├── k3
+│   │   │       │           │   └── Male-FBR-HiC-peak-extraction.newNarrowerParamters.template-v20241027_100pm-updated-v20250307.R
+│   │   │       │           └── k4
+│   │   │       │               └── Male-FBR-HiC-peak-extraction.newNarrowerParamters.template-v20241027_100pm-updated-v20250307.k4.R
+│   │   │       ├── 02-other-dots-on-X
+│   │   │       │   ├── female
+│   │   │       │   │   └── original-X-params-to-compare-to-SVs-SCOPE.XpX.20250306.R
+│   │   │       │   └── male
+│   │   │       │       └── original-X-params-to-compare-to-SVs-SCOPE.XO.20250306.R
+│   │   │       ├── 03-gDNA-control
+│   │   │       │   └── XpX
+│   │   │       │       └── gDNA-control-SCOPE.XpX.20250306.R
+│   │   │       └── 04-dot-on-IV
+│   │   │           └── HiC-peak-extraction.male-IV.20250306.R
+│   │   └── README.md
+│   └── other_utilities
+│       ├── extractFastxEntries.py
+│       ├── fxSize.py
+│       └── grep.py
 ├── genes
 │   ├── maker-Bcop_v1_to_v2-geneset-liftOff.gff.gz
 │   └── ncbi-Bcop_v1_to_v2-geneset-liftOff.gff.gz
+├── other
+│   ├── Bcop_v2.0.dict
+│   ├── Bcop_v2.0.fasta.genome
+│   ├── Bcop_v2.0.fasta.sorted.genome
+│   └── Bcop_v2.0.fasta.stats.txt
 └── repeats
     ├── libraries
     │   ├── 01-Bradysia_coprophila_repeatmodeler_families_BcopV1-canu.fasta.gz
@@ -33,6 +117,7 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
     ├── repeat-annotations-Bcop_v2.0.fasta.out.gff.gz
     └── repeat-annotations-Bcop_v2.0.fasta.tbl
 ```
+
 
 # File explanation
 - The "bcopv1_bcopv2_map" directory contains files that map Bcop_v1 to Bcop_v2.
@@ -43,4 +128,26 @@ Repository for supplemental files associated with the Nov 2022 bioRxiv preprint,
 		- 02 = An assembly produced with the Falcon assembler, also described in Urban et al 2021.
 		- Both are added together as parts of the comprehensive repeat library, which also has other components such as repeats from Dfam and RepBase, and previously-known repeat sequences from B. coprophila.
 
+
+
+
+
+# Directories for possible files of interest only
+
+```
+.
+├── README.md
+├── bcopv1_bcopv2_map
+│   ├── BcopV1_corrected_contigs_on_BcopV2.bed.gz
+│   └── Bcop_v2_from_Bcop_v1-ncbi_corrected.agp.gz
+├── genes
+│   ├── maker-Bcop_v1_to_v2-geneset-liftOff.gff.gz
+│   └── ncbi-Bcop_v1_to_v2-geneset-liftOff.gff.gz
+└── repeats
+    ├── libraries
+    │   ├── 01-Bradysia_coprophila_repeatmodeler_families_BcopV1-canu.fasta.gz
+    │   └── 02-Bradysia_coprophila_repeatmodeler_families_AlternativeAssembly-falcon.fasta.gz
+    ├── repeat-annotations-Bcop_v2.0.fasta.out.gff.gz
+    └── repeat-annotations-Bcop_v2.0.fasta.tbl
+```
 
