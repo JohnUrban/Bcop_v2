@@ -11,7 +11,6 @@ echo newest name strategy
 
 
 grep ">" ${BASE}.fasta | awk '{sub(">",""); print $1}' > ${BASE}.fasta.names
-##grep.py -f gene2protein-with-protlengths-transtab.tsv -c 2 -p final_longest_protein_selections.txt -C 1 > ${TRANS}
 grep.py -f gene2protein-with-protlengths-transtab.tsv -c 2 -p ${BASE}.fasta.names -C 1 > ${TRANS}
 cut -f 1 ${TRANS} > ${BASE}.forGenespace.names.txt ## new strategy
 
