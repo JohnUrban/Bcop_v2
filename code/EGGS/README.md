@@ -13,11 +13,20 @@ The NCBI directory structure for each species looks something like:
 	- In some cases "GCA*" is needed, not "GCF*".
 
 
-### STEP2: Processing NCBI datasets
-– e.g. Get longest isoforms of each protein for each proteome.
-	- Examples of how to do this with Bash functions can be found in the EGGS sub-directory named "ncbi-dataset-processing".
 
-	
+### STEP2: Processing NCBI datasets
+- See: 
+– e.g. Get longest isoforms of each protein for each proteome.
+- Examples of how to do this with Bash functions can be found in the EGGS sub-directory named "ncbi-dataset-processing".
+	- See "EGGS-bash-utility-functions.txt" and "process-*.sh" scripts.
+	- The bash functions depend on some of the python scripts in the "utilities" sub-directory of "Bcop_v2/code/".
+		- tableFilter.py ; extractFastxEntries.py ; fastaFormatter.py ; fxSize.py 
+- Examples of how to further process those files for GeneSpace are also given.
+	- Those commands will depend on first running the "process-*.sh" command(s).
+	- You may also need some of the same python scripts from "Bcop_v2/code/utilities" and another:
+		- setOps.py (although this line can be commented out; it was just a QC).	
+
+
 
 ### STEP3: Run OrthoFinder on longest isoforms from all 5 species.
 orthofinder -t 16 -a 16 -f proteomes/ 1> ortho.out 2> ortho.err
@@ -25,8 +34,11 @@ orthofinder -t 16 -a 16 -f proteomes/ 1> ortho.out 2> ortho.err
  -t <int>        Number of parallel sequence search threads [Default = 16]
  -a <int>        Number of parallel analysis threads
 
+
+
+
 ### STEP4: Extract SCOs across all five species into TSV file.
-Uses grep.py (or grep)
+- Uses grep.py (or grep)
 - After OrthoFinder done, go to Orthogroups subdirectory and run the extraction command.
 	- OrthoFinder/Results_*/Orthogroups
 		- Notice the following two commands are inside "( )"
@@ -35,7 +47,16 @@ Uses grep.py (or grep)
 		- "grep.py" can be found in the EGGS utilities sub-directory.
 
 
+
+
 ### STEP5: Run EGGS Processing
 - In process of writing up documentation....
 
 
+
+
+
+## OTHER NOTES:
+- All Python Utilities are also part of (and originally from): https://github.com/JohnUrban/sciaratools2
+	- Any further developments to those utilities will be done there.
+	- The versions here are fossilized to preserve the analyses.
