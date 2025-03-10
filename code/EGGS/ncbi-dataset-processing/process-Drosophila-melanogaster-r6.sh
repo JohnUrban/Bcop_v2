@@ -13,16 +13,16 @@ PROT=${DIR}/${GCF}/protein.faa
 
 
 ## EXECUTE
-#ncbi_pipeline ${GTF} ${PROT} ${OUT}
-#get_gene_bed_OCL_input ${GTF} > ${OUTPRE}.OCLinput.tsv
-#get_seq_sizes ${DIR}/${GCF}/*.fna
+ncbi_pipeline ${GTF} ${PROT} ${OUT}
+get_gene_bed_OCL_input ${GTF} > ${OUTPRE}.OCLinput.tsv
+get_seq_sizes ${DIR}/${GCF}/*.fna
 get_chr_to_acc
 
 
 
-# get_gene_bed_OCL_input_20231004  ${GTF} > ${OUTPRE}.alt.OCLinput.tsv
-#mv fruit_fly_melanogaster.OCLinput.tsv fruit_fly_melanogaster.old.OCLinput.tsv 
-#mv fruit_fly_melanogaster.alt.OCLinput.tsv fruit_fly_melanogaster.OCLinput.tsv 
+get_gene_bed_OCL_input_20231004  ${GTF} > ${OUTPRE}.alt.OCLinput.tsv
+mv fruit_fly_melanogaster.OCLinput.tsv fruit_fly_melanogaster.old.OCLinput.tsv 
+mv fruit_fly_melanogaster.alt.OCLinput.tsv fruit_fly_melanogaster.OCLinput.tsv 
 
 
 get_gene_bed_OCL_input_PROTEINCODING ${GTF} > ${OUTPRE}.protein-coding.OCLinput.tsv

@@ -12,7 +12,7 @@ PROT=${DIR}/${GCF}/protein.faa
 
 
 ## EXECUTE
-#ncbi_pipeline ${GTF} ${PROT} ${OUT}
-#get_gene_bed_OCL_input ${GTF} > ${OUTPRE}.OCLinput.tsv
-#get_seq_sizes ${DIR}/${GCF}/*.fna
+ncbi_pipeline ${GTF} ${PROT} ${OUT}
+get_gene_bed_OCL_input ${GTF} > ${OUTPRE}.OCLinput.tsv
+get_seq_sizes ${DIR}/${GCF}/*.fna
 get_chr_to_acc
