@@ -15,6 +15,7 @@ The NCBI directory structure for each species looks something like:
 
 ### STEP2: Processing NCBI datasets
 – e.g. Get longest isoforms of each protein for each proteome.
+	- Examples of how to do this with Bash functions can be found in the EGGS sub-directory named "ncbi-dataset-processing".
 
 	
 
@@ -31,6 +32,8 @@ Uses grep.py (or grep)
 		- Notice the following two commands are inside "( )"
 		- ( head -n 1 Orthogroups.tsv ; 
 		    grep.py -p Orthogroups_SingleCopyOrthologues.txt -f Orthogroups.tsv -c 1 -C 1 ) > Orthogroups_SingleCopyOrthologues.tsv
+		- "grep.py" can be found in the EGGS utilities sub-directory.
+
 
 ### STEP5: Run EGGS Processing
 - In process of writing up documentation....
