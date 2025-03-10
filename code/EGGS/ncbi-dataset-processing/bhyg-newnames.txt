@@ -1,0 +1,4 @@
+X	chrX
+A	chrA
+B	chrB
+C	chrC
