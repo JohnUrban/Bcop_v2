@@ -1,0 +1,227 @@
+
+function get_gene2protein_transtab_from_ncbi_gtf {
+  F=${1} ##ncbi_dataset/data/GCF_002204515.2/genomic.gtf ; 
+  awk '$3=="CDS" { match($0,/LOC[0-9]*/) ; NG=substr($0,RSTART,RLENGTH) ; match($0,/CFI06_mgp[0-9]*/); MG=substr($0,RSTART,RLENGTH); match($0,/[XY]P_[0-9]*\.[0-9]*/) ; P=substr($0,RSTART,RLENGTH) ; if ( NG == "" ){G=MG} else {G=NG}; print G"\t"P}' ${F} | uniq | sort -u > gene2protein-transtab.tsv
+}
+
+function get_gene2protein_with_lengths_transtab_from_ncbi_gtf_old {
+  F=${1} #ncbi_dataset/data/GCF_002204515.2/genomic.gtf ; 
+  awk '$3=="CDS" { match($0,/LOC[0-9]*/) ; NG=substr($0,RSTART,RLENGTH) ; match($0,/CFI06_mgp[0-9]*/); MG=substr($0,RSTART,RLENGTH); match($0,/[XY]P_[0-9]*\.[0-9]*/) ; P=substr($0,RSTART,RLENGTH) ; if ( NG == "" ){G=MG} else {G=NG}; psum[P]+=($5-$4+1) ; p2g[P]=G }END{for (prot in psum) print p2g[prot]"\t"prot"\t"psum[prot]}' ${F} | uniq | sort -u > gene2protein-with-protlengths-transtab.tsv
+}
+
+
+#awk '$3=="CDS" { OFS="\t" ; match($0,/LOC[0-9]*/) ; NG=substr($0,RSTART,RLENGTH) ; match($0,/CFI06_mgp[0-9]*/); MG=substr($0,RSTART,RLENGTH); match($0,/gene_id[[:space:]][^[:space:]]*/) ; 
+#AG=substr($0,RSTART+9,RLENGTH-11) ; match($0,/[XY]P_[0-9]*\.[0-9]*/) ; P=substr($0,RSTART,RLENGTH) ; if ( NG == "" ){G=MG} else {G=NG}; if ( NG == "" && MG == "" ){G=AG} ;
+
+function get_gene2protein_with_lengths_transtab_from_ncbi_gtf {
+  F=${1} #ncbi_dataset/data/GCF_002204515.2/genomic.gtf ; 
+  awk '$3=="CDS" { 
+	match($0,/LOC[0-9]*/) ; 
+	NG=substr($0,RSTART,RLENGTH) ; 
+	
+	match($0,/CFI06_mgp[0-9]*/); 
+	MG=substr($0,RSTART,RLENGTH); 
+
+	match($0,/gene_id[[:space:]][^[:space:]]*/) ; 
+	AG=substr($0,RSTART+9,RLENGTH-11) ; 
+
+	match($0,/[XY]P_[0-9]*\.[0-9]*/) ; 
+	P=substr($0,RSTART,RLENGTH) ; 
+	
+        match($0, /protein_id[[:space:]][^[:space:]]*/) ;
+	AP=substr($0,RSTART+12,RLENGTH-14) ;
+
+	if ( NG == "" ){G=MG} else {G=NG}; 
+
+	if ( NG == "" && MG == ""){G=AG} ;
+
+	if ( P == "" ){P=AP} ;
+
+	psum[P]+=($5-$4+1) ; p2g[P]=G }END{for (prot in psum) print p2g[prot]"\t"prot"\t"psum[prot]}' ${F} | uniq | sort -u > gene2protein-with-protlengths-transtab.tsv
+}
+
+
+
+
+
+function get_gene2poritein_with_lengths_from_ncbi_bhyg_GCA_gff {
+  F=${1} #ncbi_dataset/data/GCA_029228625.1/genomic.gff
+  awk '$3=="CDS" {OFS="\t" ; 
+	match($0, /locus_tag=Bhyg_[0-9]*/); 
+	G=substr($0, RSTART+10,RLENGTH-10) ; 
+
+	match($0, /ID=cds-KAJ[0-9]*\.[0-9]*/); 
+	P=substr($0, RSTART+7,RLENGTH-7); 
+
+	psum[P]+=($5-$4+1) ; p2g[P]=G }END{for (prot in psum) print p2g[prot]"\t"prot"\t"psum[prot]}' ${F} | uniq | sort -u > gene2protein-with-protlengths-transtab.tsv  
+}
+
+
+
+function select_longest_proteins_from_transtab {
+  F=gene2protein-with-protlengths-transtab.tsv ## will always be this..
+  tableFilter.py -n 1 -s 3 ${F} | awk '{print $2}' > final_longest_protein_selections.txt
+}
+
+function extract_longest_proteins_from_ncbi_prot_fa {
+  PROT=${1} ## ncbi_dataset/data/GCF_002204515.2/protein.faa
+  OUT=${2}  ## yellow_fever_mosquito.fasta
+  extractFastxEntries.py -n final_longest_protein_selections.txt -f ${PROT} | fastaFormatter.py -f - > ${OUT}
+}
+
+function ncbi_pipeline {
+  GTF=${1}
+  PROT=${2}
+  OUT=${3}
+  get_gene2protein_with_lengths_transtab_from_ncbi_gtf ${GTF}
+  select_longest_proteins_from_transtab
+  extract_longest_proteins_from_ncbi_prot_fa ${PROT} ${OUT}
+}
+
+
+
+function get_gene_bed_OCL_input {
+  F=${1} #ncbi_dataset/data/GCF_002204515.2/genomic.gtf ; 
+  awk '$3=="gene" { OFS="\t" ;
+
+	match($0,/LOC[0-9]*/) ; 
+	NG=substr($0,RSTART,RLENGTH) ; 
+	
+	match($0,/CFI06_mgp[0-9]*/); 
+	MG=substr($0,RSTART,RLENGTH); 
+
+	match($0,/gene_id[[:space:]][^[:space:]]*/) ; 
+	AG=substr($0,RSTART+9,RLENGTH-11) ; 
+
+	if ( NG == "" ){G=MG} else {G=NG}; 
+
+	if ( NG == "" && MG == ""){G=AG} ;
+
+	print $1, $4-1, $5, G, $7}' ${F}
+}
+
+
+function get_gene_bed_OCL_input_PROTEINCODING {
+  F=${1} #ncbi_dataset/data/GCF_002204515.2/genomic.gtf ; 
+  ## gene_biotype "protein_coding"
+  awk '$3=="gene" && $0 ~ /gene_biotype \"protein_coding\"/ { OFS="\t" ;
+
+	match($0,/LOC[0-9]*/) ; 
+	NG=substr($0,RSTART,RLENGTH) ; 
+	
+	match($0,/CFI06_mgp[0-9]*/); 
+	MG=substr($0,RSTART,RLENGTH); 
+
+	match($0,/gene_id[[:space:]][^[:space:]]*/) ; 
+	AG=substr($0,RSTART+9,RLENGTH-11) ; 
+
+	if ( NG == "" ){G=MG} else {G=NG}; 
+
+	if ( NG == "" && MG == ""){G=AG} ;
+
+	print $1, $4-1, $5, G, $7}' ${F}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function get_gene2protein_with_lengths_transtab_from_ncbi_gtf_20231004 {
+  F=${1} #ncbi_dataset/data/GCF_002204515.2/genomic.gtf ; 
+  awk '$3=="CDS" { 
+	## PROTEIN
+	match($0,/[XY]P_[0-9]*\.[0-9]*/) ; 
+	P=substr($0,RSTART,RLENGTH) ; 
+	
+        match($0, /protein_id[[:space:]][^[:space:]]*/) ;
+	AP=substr($0,RSTART+12,RLENGTH-14) ;
+
+	if ( P == "" ){P=AP} ;
+
+	## GENE
+	match($0, /[ID=[^;]*|gene=[^;]*]/) ;
+	GFF=substr($0,RSTART+8,RLENGTH-8)
+
+	match($0,/gene_id[[:space:]][^[:space:]]*/) ; 
+	GTF=substr($0,RSTART+9,RLENGTH-11) ; 
+
+	match($0,/LOC[0-9]*/) ; 
+	NG=substr($0,RSTART,RLENGTH) ; 
+	
+	match($0,/CFI06_mgp[0-9]*/); 
+	MG=substr($0,RSTART,RLENGTH); 
+
+	if ( GFF == "" ){G=GTF} else {G=GFF}; 
+
+	if ( GFF == "" && GTF == "" ){G=NG} ;
+
+	if ( GFF == "" && GTF == "" && NG == "" ){G=MG} ;
+
+
+	## PROCESS
+	psum[P]+=($5-$4+1) ; p2g[P]=G }END{for (prot in psum) print p2g[prot]"\t"prot"\t"psum[prot]}' ${F} | uniq | sort -u #####> gene2protein-with-protlengths-transtab.tsv
+}
+
+
+
+
+
+function get_gene_bed_OCL_input_20231004 {
+  F=${1} #ncbi_dataset/data/GCF_002204515.2/genomic.gtf ; 
+  awk '$3=="gene" { OFS="\t" ;
+
+	match($0, /ID=[^;]*/) ;
+	GFF=substr($0,RSTART+8,RLENGTH-8)
+
+	match($0,/gene_id[[:space:]][^[:space:]]*/) ; 
+	GTF=substr($0,RSTART+9,RLENGTH-11) ; 
+
+	match($0,/LOC[0-9]*/) ; 
+	NG=substr($0,RSTART,RLENGTH) ; 
+	
+	match($0,/CFI06_mgp[0-9]*/); 
+	MG=substr($0,RSTART,RLENGTH); 
+
+
+	if ( GFF == "" ){G=GTF} else {G=GFF}; 
+
+	if ( GFF == "" && GTF == "" ){G=NG} ;
+
+	if ( GFF == "" && GTF == "" && NG == "" ){G=MG} ;
+
+	print $1, $4-1, $5, G, $7}' ${F}
+}
+
+
+
+
+
+
+function get_seq_sizes {
+  cat ${@} |  fxSize.py -fa - > seq.sizes.tsv
+}
+
+
+function get_chr_to_acc {
+  for f in ncbi_dataset/data/GCF*/chr*.fna ; do 
+    B=$( basename $f .fna ) ; 
+    SKIP=$( echo $B | grep -c -i -E 'unplaced|unlocalized' ) ; 
+    if [ $SKIP -eq 0 ]; then 
+      ACC=$( head -n 1 $f | awk '{sub(">",""); print $1}' ) ;  
+      echo -e "${B}\t${ACC}" ; 
+    fi ; 
+  done > chr2acc.tsv
+}
+
+
+
+function get_chr_to_acc_bhyg {
+  grep ">" ${1} | grep chromosome | awk '{match($0, /chromosome [A-Z]/); name=substr($0, RSTART, RLENGTH); sub(">",""); print name"\t"$1}' > chr2acc.tsv
+}
