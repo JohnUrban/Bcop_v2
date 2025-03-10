@@ -1,0 +1,12 @@
+Number contigs: 595
+Assembly size: 309636011.0
+Max contig size: 97081274.0
+Min contig size: 671.0
+Mean contig size: 520396.65714285715
+Median contig size: 17801.0
+Contig N50.0	71047972
+Contig L50.0	2
+E size (G=309636011) = 73791194
+Contig NG50.0 (G=292000000)	71047972
+Contig LG50.0 (G=292000000)	2
+E size (G=292000000) = 78247983
