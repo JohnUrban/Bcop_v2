@@ -21,16 +21,7 @@ Each species had its own directory, inside of which was a NCBI directory structu
 - Reprocesses some of the NCBI dataset stuff.
 - Generates files needed in subsequent steps.
 
-### 03-further*.sh
-- Takes input from previous steps, generates SCO lists and BED files for each genome.
 
+## After processing, next is running OrthoFinder using the protein.faa files.
 
-## 04-prepare-for-analysis-in-R.ipynb 
-- Jupyter notebook to take in outputs of previous steps as input to make PAF files.
-	- Each line gives the chromosomal addresses for one SCO in species A and species B.
-	- This is input to dot plots in R, using Lave: https://github.com/JohnUrban/lave
-
-
-## 05-follow-up.sh 
-- Does two small follow-up steps
-- Uses provided file, bhyg-newnames.txt
+## It has been a while since I ran this, dear reader, so it is possible that actually these NCBI processing steps can be done independent of OrthoFinder, or after it.
