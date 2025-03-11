@@ -1,6 +1,9 @@
 # EGGS
 Entropy of Gene Group Shuffling.
 
+## Code used for Bcop_v2 paper can be found here.
+- Updates to EGGS will be hosted at https://github.com/JohnUrban/EGGS
+- Updates will include automating the process for others to do their own EGGS barplots, clustermaps, tables, and more.
 
 
 ### STEP1: Download genome datasets from NCBI
