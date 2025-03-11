@@ -18,6 +18,11 @@
 	- a specific end of a specific contig to see the evidence for its attachment to the immediately neighboring contig end.
 
 
+# Getting input files
+- First need to run the "Phase Map" pipeline for mapping Hi-C reads, found in a parallel directory under ~/Bcop_v2/code/.
+- Will be using the BEDPE output.
+
+
 # Examples from Bcop_v2 paper
 - Tested so-called "alien" p450 genes, compared to highly conserved fly genes.
 - Tested contigs in scaffolds.
