@@ -342,6 +342,174 @@ class SpeciesFiles(object):
 
 
 
+
+
+##def get_table_from_paf(paf, sp1names=None, sp2names=None, pseudo=0):
+##    if sp1names is None:
+##        sp1names = list(paf.chr_sp1.unique())
+##    if sp2names is None:
+##        sp2names = list(paf.chr_sp2.unique())
+##    gate = (paf.chr_sp1.map(lambda x: x in sp1names)) & (paf.chr_sp2.map(lambda x: x in sp2names))
+##    tab = paf[gate].chr_sp1.groupby([paf.chr_sp1, paf.chr_sp2]).size().unstack().fillna(0)
+##    return tab+pseudo
+##
+##def get_joint_probability_entropy_from_paf(paf, sp1names=None, sp2names=None, pseudo=0):
+##    tab = get_table_from_paf(paf, sp1names, sp2names,pseudo)
+##    prob = get_joint_probabilities_from_table(tab)
+##    return get_entropy_from_joint_probabilities(prob)
+
+
+
+
+
+
+## JOINT, MARG, AND GENERAL FXNS
+def get_joint_probabilities_from_table(tab):
+    return tab/tab.sum().sum()
+
+def get_margin_counts(tab,axis=1):
+    return tab.sum(axis)
+
+
+def get_marginal_probabilities(tab,axis=1):
+    return tab.sum(axis)/tab.sum().sum()
+
+
+def get_marginal_probabilities_from_margin_counts(margin_counts):
+    return margin_counts/margin_counts.sum()
+
+def get_surprisal_table_from_probs(prob):
+    return -1*np.log2(prob)
+
+def get_weighted_prob_surprisal_table(prob,surprisal):
+    return prob*surprisal
+
+def get_entropy_from_weighted_surprisal_table(weighted_surprisal):
+    return weighted_surprisal.sum().sum()
+
+def get_entropy_from_probabilities(prob):
+    return -1*(prob*np.log2(prob)).sum().sum()
+
+
+
+## JOINT WRAPPERS
+def get_surprisal_table_from_joint_probs(prob):
+    return get_surprisal_table_from_probs(prob)
+
+def get_weighted_joint_prob_surprisal_table(prob,surprisal):
+    return get_weighted_prob_surprisal_table(prob,surprisal)
+
+def get_joint_prob_entropy(weighted_surprisal):
+    return get_entropy_from_weighted_surprisal_table(weighted_surprisal)
+
+def get_entropy_from_joint_probabilities(prob):
+    return get_entropy_from_probabilities(prob)
+
+
+
+## EXPECTED JOINT FXN
+def get_random_joint_probabilities_from_table(tab):
+    sp1ran = get_marginal_probabilities(tab,axis=1) ##tab.sum(1)/tab.sum().sum()
+    sp2ran = get_marginal_probabilities(tab,axis=0) ##tab.sum(0)/tab.sum().sum()
+    a = np.array(sp1ran).reshape(len(sp1ran),1)
+    b = np.array(sp2ran).reshape(1,len(sp2ran))
+    c = np.matmul(a,b)
+    return c
+
+
+## MARGINAL FXNS AND WRAPPERS
+
+def get_surprisal_table_from_marginal_probs(prob):
+    return get_surprisal_table_from_probs(prob)
+
+def get_weighted_marginal_prob_surprisal_table(prob,surprisal):
+    return get_weighted_prob_surprisal_table(prob,surprisal)
+
+def get_marginal_prob_entropy(weighted_surprisal):
+    return get_entropy_from_weighted_surprisal_table(weighted_surprisal)
+
+def get_entropy_from_marginal_probabilities(prob):
+    return get_entropy_from_probabilities(prob)
+
+def get_marginal_prob_entropy_from_counts_table(tab,axis=1):
+    marg_prob = get_marginal_probabilities(tab,axis)
+    marg_entr = get_entropy_from_joint_probabilities(marg_prob)
+    return marg_entr
+
+
+## ALT APPROACH: ESTIMATING ENTROPY FROM JOINT PROBS UNDER PERFECT CONSERVATION
+## Estimating entropy of joint probability of highly/fully conserved (0 entropy) comparison
+## - note that fully conserved joint probs converges on entropy from marginal probabilities
+## - this joint approach needs pseudocounts for log() step since perfect conservation means all off-diagonal values are 0; and 0*log2(0) is undefined (NaN),
+##     but as the first term in p*log2(p) approaches 0, the contribution to entropy sum from that i,j cell goes to 0 as well, leaving just the diagonal i,i cells, which is the same as getting entropy from marginal probs.
+## - 
+def get_self_self_count_table(tab, axis=1, pseudo=0):
+    margin_counts = tab.sum(axis)
+    nchr          = len(margin_counts)
+    mat           = np.zeros([nchr,nchr])
+    for i in range(nchr):
+        mat[i,i] = margin_counts[i]
+
+    mat += pseudo
+    return pd.DataFrame(mat, columns=margin_counts.index, index=margin_counts.index)
+
+##def get_self_self_joint_prob_table(tab, axis=1, pseudo=0):
+##    selftab = get_self_self_count_table(tab, axis, pseudo)
+##    return get_joint_probabilities_from_table(selftab)
+##
+##def get_self_self_joint_surprisal_table(tab, axis=1, pseudo=0):
+##    #selftab = get_self_self_count_table(tab, axis, pseudo)
+##    selfprob = get_self_self_joint_prob_table(tab, axis, pseudo)
+##    return get_surprisal_table_from_joint_probs(selfprob)
+
+def get_self_self_joint_entropy_dict(tab, axis=1, pseudo=0):
+    selftab  = get_self_self_count_table(tab, axis, pseudo)
+    selfprob = get_joint_probabilities_from_table(selftab)
+    selfsurp = get_surprisal_table_from_joint_probs(selfprob)
+    selfwsur = get_weighted_joint_prob_surprisal_table(selfprob, selfsurp)
+    selfentr = get_joint_prob_entropy(selfwsur )
+    return dict(selftab=selftab, selfprob=selfprob, selfsurp=selfsurp, selfwsur=selfwsur, selfentr=selfentr)
+    
+
+def get_self_self_joint_entropy(tab, axis=1, pseudo=0):
+    selftab  = get_self_self_count_table(tab, axis, pseudo)
+    selfprob = get_joint_probabilities_from_table(selftab)
+    return get_entropy_from_joint_probabilities(selfprob)
+
+
+def get_average_self_self_joint_entropy(tab, pseudo=0):
+    selftab1  = get_self_self_count_table(tab, axis=1, pseudo=pseudo)
+    selfprob1 = get_joint_probabilities_from_table(selftab1)
+    H1 = get_entropy_from_joint_probabilities(selfprob1)
+    selftab2  = get_self_self_count_table(tab, axis=0, pseudo=pseudo)
+    selfprob2 = get_joint_probabilities_from_table(selftab2)
+    H2 = get_entropy_from_joint_probabilities(selfprob2)
+    return dict(selftab1=selftab1, selfprob1=selfprob1, H1=H1, selftab2=selftab2, selfprob2=selfprob2, H2=H2, H=np.mean([H1,H2])) 
+
+
+def strip_string(string, pre=["chr"], sfx=["L","R"]):
+    assert type(pre) in [tuple, list]
+    assert type(sfx) in [tuple, list]
+    for p in pre:
+        if string.startswith(p):
+            string = string[len(p):]
+    for s in sfx:
+        if string.endswith(s):
+            string = string[:-len(s)]
+    return string
+    
+
+def strip_col_names(df, colname, pre=["chr"], sfx=["L","R"]):
+    df[colname] = df[colname].map(lambda x: strip_string(x, pre, sfx))
+    return df
+
+
+
+
+
+
+
+
 class SimplePaf(object):
     def __init__(self, sp1, sp2, input1, sp1id="sp1", sp2id="sp2", sp1_chr_names=None, sp2_chr_names=None, pseudo=0,
                  strip_sp1_names = False, strip_sp2_names=False, pre=["chr"], sfx=["L","R"]):
@@ -356,12 +524,12 @@ class SimplePaf(object):
         self._get_inputs()
         self._get_paf()
         self._set_chr_names() ## needs to be below _get_paf()
-##        if strip_sp1_names:
-##            self.strip_sp1_chr_names(pre=pre, sfx=sfx, paf=True, chrlist=True)
-##        if strip_sp2_names:
-##            self.strip_sp2_chr_names(pre=pre, sfx=sfx, paf=True, chrlist=True)
-##        self._make_table()
-##        self._entropy_pipeline()
+        if strip_sp1_names:
+            self.strip_sp1_chr_names(pre=pre, sfx=sfx, paf=True, chrlist=True)
+        if strip_sp2_names:
+            self.strip_sp2_chr_names(pre=pre, sfx=sfx, paf=True, chrlist=True)
+        self._make_table()
+        self._entropy_pipeline()
 
     ##############################################################################################################################
     ### PUBLIC
