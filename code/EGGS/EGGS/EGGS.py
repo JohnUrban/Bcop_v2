@@ -13,8 +13,40 @@ Author: John M. Urban.
 version 1.0
 - Needed functions for reproducing Bcop_v2 paper EGGS analyses were copied from John Urban's orthoChainLinkerUtilities.py version 0.4.0.
 
+##############################################################################################
+### EGGS - Entropy of Gene Group Shuffling - functions.
+###       - Version v1.0.0.
+### FUNCTIONS. Simply import these functions to JupNB or other python functions.
+##############################################################################################
+### Cite the following pre-print (or follow-up publication associated with it):
+###    Chromosome-scale scaffolding of the fungus gnat genome (Diptera: Bradysia coprophila)
+###    John M. Urban, Susan A. Gerbi, Allan C. Spradling
+###    bioRxiv 2022.11.03.515061; doi: https://doi.org/10.1101/2022.11.03.515061
+##############################################################################################
+### The first published version, used in the published paper, is part of the code section of:
+###   - https://github.com/JohnUrban/Bcop_v2
+### Updates to it will be hosted at: https://github.com/JohnUrban/EGGS
+##############################################################################################
 
 ''' % (version)
+
+
+
+##############################################################################################
+### EGGS - Entropy of Gene Group Shuffling - functions.
+###       - Version v1.0.0.
+### FUNCTIONS. Simply import these functions to JupNB or other python functions.
+##############################################################################################
+### Cite the following pre-print (or follow-up publication associated with it):
+###    Chromosome-scale scaffolding of the fungus gnat genome (Diptera: Bradysia coprophila)
+###    John M. Urban, Susan A. Gerbi, Allan C. Spradling
+###    bioRxiv 2022.11.03.515061; doi: https://doi.org/10.1101/2022.11.03.515061
+##############################################################################################
+### The first published version, used in the published paper, is part of the code section of:
+###   - https://github.com/JohnUrban/Bcop_v2
+### Updates to it will be hosted at: https://github.com/JohnUrban/EGGS
+##############################################################################################
+
 
 
 ########## ########## ########## ########## ########## ########## ########## ########## ########## ########## ########## ########## ########## 
