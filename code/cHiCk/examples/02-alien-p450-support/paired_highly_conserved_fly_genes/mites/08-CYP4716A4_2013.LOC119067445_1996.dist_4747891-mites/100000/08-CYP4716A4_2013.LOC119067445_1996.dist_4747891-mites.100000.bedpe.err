@@ -1,0 +1,29 @@
+grablinksfrombed	
+BED	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/conserved_fly_genes/indiv/mites/input/08-CYP4716A4_2013.LOC119067445_1996.dist_4747891-mites.bed
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+BINSIZE	100000
+WINDOWS	windows-w100000-around-08-CYP4716A4_2013.LOC119067445_1996.dist_4747891-mites.bed
+CHR	X
+OSTART	38543104
+OEND	38545100
+BEDBASE	08-CYP4716A4_2013.LOC119067445_1996.dist_4747891-mites
+BEDPEBASE	XO-phasemap-q0.sameChr
+OUTPRE	08-CYP4716A4_2013.LOC119067445_1996.dist_4747891-mites_XO-phasemap-q0.sameChr
+PSEUDOCOUNT	1
+
+grablinks	
+CHR	X
+A	38543104
+B	38545100
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+
+get_count_dist_v3	
+F	08-CYP4716A4_2013.LOC119067445_1996.dist_4747891-mites_XO-phasemap-q0.sameChr.bedpe
+F2	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/conserved_fly_genes/indiv/mites/input/08-CYP4716A4_2013.LOC119067445_1996.dist_4747891-mites.bed
+WINDOWS	windows-w100000-around-08-CYP4716A4_2013.LOC119067445_1996.dist_4747891-mites.bed
+G	/mnt/sequence/jurban/base/data/sciara/phase/Bcop_v2.0/Bcop_v2.0_pkg/Bcop_v2.0.fasta.genome
+PSEUDOCOUNT	1
+TARGETLEN	1996
+TAGNAME	RP10KB
+SCALE	10000
+

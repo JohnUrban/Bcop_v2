@@ -1,0 +1,232 @@
+
+function errchovars {
+  for VAR in ${@} ; do echo -e "${VAR}\t${!VAR}" 1>&2 ; done
+  echo 1>&2
+}
+
+function grablinks {
+  CHR=${1}
+  A=${2}
+  B=${3}
+  BEDPE=${4}
+  errchovars grablinks CHR A B BEDPE
+  awk -v "A=${A}" -v "B=${B}" -v "CHR=${CHR}" '$1==$4 && $1==CHR {if(  ( $2 >= A && $2 <= B ) || ( $3 >= A && $3 <= B ) || ( $5 >= A && $5 <= B ) || ( $6 >= A && $6 <= B) ){print }}' ${BEDPE}
+}
+
+
+
+
+
+
+function get_count_dist {
+  F=${1}
+  F2=${2}
+  WINDOWS=${3}
+  FBASE=$( basename ${F} .bedpe ) ; 
+  WBASE=$( basename $WINDOWS .bed ) ; 
+  awk 'OFS="\t" {print $1,$2,$3"\n"$4,$5,$6}' ${F} | intersectBed -v -a - -b ${F2} | coverageBed -counts -a ${WINDOWS} -b - > ${FBASE}.counts-in-${WBASE}.bedGraph 
+}
+
+function grablinksfromleftend {
+  CHR=${1}
+  START=${2}
+  BINSIZE=${3}
+  BEDPE=${4}
+  OUTPRE=${5}
+  WINDOWS=${6}
+  END=$( echo ${START} ${BINSIZE} | awk '{print $1+$2}' )
+  errchovars grablinksfromleftend BINSIZE CHR START END BEDPE WINDOWS OUTPRE
+  echo -e "${CHR}\t${START}\t${END}" > ${OUTPRE}.LEFT.bed
+  grablinks ${CHR} ${START} ${END} ${BEDPE} > ${OUTPRE}.bedpe
+  get_count_dist ${OUTPRE}.bedpe ${OUTPRE}.LEFT.bed ${WINDOWS}
+}
+
+
+
+function grablinksfromrightend {
+  CHR=${1}
+  END=${2}
+  BINSIZE=${3}
+  BEDPE=${4}
+  OUTPRE=${5}
+  WINDOWS=${6}
+  START=$( echo ${END} ${BINSIZE} | awk '{print $1-$2}' )
+  errchovars grablinksfromrightend BINSIZE CHR START END BEDPE WINDOWS OUTPRE
+  echo -e "${CHR}\t${START}\t${END}" > ${OUTPRE}.RIGHT.bed
+  grablinks ${CHR} ${START} ${END} ${BEDPE} > ${OUTPRE}.bedpe
+  get_count_dist ${OUTPRE}.bedpe ${OUTPRE}.RIGHT.bed ${WINDOWS}
+}
+
+
+function grablinksfrombedends {
+  BED=${1}
+  BINSIZE=${2}
+  BEDPE=${3}
+  WINDOWS=${4}
+  ARR=( $( head -n 1 ${BED} | cut -f 1-3 ) )
+  CHR=${ARR[0]}
+  OSTART=${ARR[1]}
+  OEND=${ARR[2]}
+  BEDBASE=$( basename ${BED} .bed )
+  BEDPEBASE=$( basename ${BEDPE} .bedpe )
+  PRE=${BEDBASE}_${BEDPEBASE}
+  LEFT=${PRE}.left-${BINSIZE}bp
+  RIGHT=${PRE}.right-${BINSIZE}bp
+  errchovars grablinksfrombedends BED BINSIZE BEDPE CHR OSTART OEND BEDBASE BEDPEBASE PRE LEFT RIGHT
+  grablinksfromleftend ${CHR} ${OSTART} ${BINSIZE} ${BEDPE} ${LEFT} ${WINDOWS}
+  grablinksfromrightend ${CHR} ${OEND} ${BINSIZE} ${BEDPE} ${RIGHT} ${WINDOWS}
+}
+
+
+
+function grablinksfrombed {
+  ## grablinksfrombed BED BEDPE BINSIZE WINDOWS
+  BED=${1}
+  BINSIZE=${2}
+  BEDPE=${3}
+  WINDOWS=${4}
+
+  ARR=( $( head -n 1 ${BED} | cut -f 1-3 ) )
+  CHR=${ARR[0]} 
+  OSTART=${ARR[1]}
+  OEND=${ARR[2]}
+  BEDBASE=$( basename ${BED} .bed )
+  BEDPEBASE=$( basename ${BEDPE} .bedpe )
+  OUTPRE=${BEDBASE}_${BEDPEBASE}
+
+  errchovars grablinksfrombed BED BEDPE BINSIZE WINDOWS CHR OSTART OEND BEDBASE BEDPEBASE OUTPRE
+
+  grablinks ${CHR} ${OSTART} ${OEND} ${BEDPE} > ${OUTPRE}.bedpe
+  get_count_dist ${OUTPRE}.bedpe ${BED} ${WINDOWS}
+}
+
+
+
+function makewindows {
+  ## Complements provided BED perfectly (not approximately) - but sticks to just the same chromosome it is on.
+  ## results to stdout
+  BED=${1}
+  G=${2}
+  W=${3}
+  S=${4}
+
+  ## Get Bed coords
+  ARR=( $( head -n 1 ${BED} | cut -f 1-3 ) )
+  CHR=${ARR[0]} 
+  START=${ARR[1]}
+  END=${ARR[2]}
+
+  ## Get G
+  GARR=( $( grep -w ${CHR} ${G} | cut -f 1-2 ) )
+  GEND=${GARR[1]}  
+
+  ## Get coords backwards from START
+  NEWSTART=$( echo ${START} | awk -v "STEP=${S}" '{print $1-STEP}' )
+  NEWEND=$( echo  ${NEWSTART} | awk -v "WINSIZE=${W}" '{print $1+WINSIZE}' )
+  while [ ${NEWSTART} -ge 0 ] ; do
+    echo -e "${CHR}\t${NEWSTART}\t${NEWEND}"
+    NEWSTART=$( echo ${NEWSTART} | awk -v "STEP=${S}" '{print $1-STEP}' )
+    NEWEND=$( echo  ${NEWSTART} | awk -v "WINSIZE=${W}" '{print $1+WINSIZE}' )
+  done | sortBed -i - 
+
+  ## Get coords forwards from END
+  NEWSTART=${END}
+  NEWEND=$( echo  ${NEWSTART} | awk -v "WINSIZE=${W}" '{print $1+WINSIZE}' )
+  while [ ${NEWEND} -le ${GEND} ] ; do
+    echo -e "${CHR}\t${NEWSTART}\t${NEWEND}"
+    NEWSTART=$( echo ${NEWSTART} | awk -v "STEP=${S}" '{print $1+STEP}' )
+    NEWEND=$( echo  ${NEWSTART} | awk -v "WINSIZE=${W}" '{print $1+WINSIZE}' )
+  done | sortBed -i -
+}
+
+
+function get_count_dist_v2 {
+  F=${1}  ##links, bedpe
+  F2=${2} ##source of links, bed 
+  WINDOWS=${3}
+  G=${4}
+  FBASE=$( basename ${F} .bedpe ) ; 
+  WBASE=$( basename $WINDOWS .bed ) ; 
+  awk 'OFS="\t" {print $1,$2,$3"\n"$4,$5,$6}' ${F} | coverageBed -counts -a ${WINDOWS} -b - > ${FBASE}.counts-in-${WBASE}.bedGraph 
+  complementBed -i ${FBASE}.counts-in-${WBASE}.bedGraph -g ${G} | awk 'OFS="\t" {print $1,$2,$3,0}' > ${FBASE}.counts-in-${WBASE}.complement.bedGraph
+  bedGraphToBigWig ${FBASE}.counts-in-${WBASE}.bedGraph ${G} ${FBASE}.counts-in-${WBASE}.bw
+  cat ${FBASE}.counts-in-${WBASE}.bedGraph ${FBASE}.counts-in-${WBASE}.complement.bedGraph | sortBed -i - >  ${FBASE}.counts-in-${WBASE}.complement.alt.bedGraph
+  bedGraphToBigWig ${FBASE}.counts-in-${WBASE}.alt.bedGraph ${G} ${FBASE}.counts-in-${WBASE}.alt.bw
+}
+
+
+function grablinksfrombed_v2 {
+  ## similar to above, but will use binsize to create windows on the fly ; not use pre-provided windows.
+  ## moreover, the windows will be made starting from the start and end points of the provided BED interval, and only on the same chromosome.
+  ## grablinksfrombed BED BEDPE BINSIZE WINDOWS
+  BED=${1}
+  BINSIZE=${2}
+  BEDPE=${3}
+  G=${4}
+
+  ARR=( $( head -n 1 ${BED} | cut -f 1-3 ) )
+  CHR=${ARR[0]} 
+  OSTART=${ARR[1]}
+  OEND=${ARR[2]}
+  BEDBASE=$( basename ${BED} .bed )
+  BEDPEBASE=$( basename ${BEDPE} .bedpe )
+  OUTPRE=${BEDBASE}_${BEDPEBASE}
+  WINDOWS=windows-w${BINSIZE}-around-${BEDBASE}.bed
+
+  errchovars grablinksfrombed BED BEDPE BINSIZE WINDOWS CHR OSTART OEND BEDBASE BEDPEBASE OUTPRE
+
+
+  grablinks ${CHR} ${OSTART} ${OEND} ${BEDPE} > ${OUTPRE}.bedpe
+
+  makewindows ${BED} ${G} ${BINSIZE} ${BINSIZE} | sortBed -i - > ${WINDOWS}
+
+  get_count_dist_v2 ${OUTPRE}.bedpe ${BED} ${WINDOWS}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####################################################################################
+function stuff {
+  ## left
+  F=contig_103-contains-II9A_XO-phasemap-q0.sameChr.left-10000bp.bedpe ; 
+  F2=contig_103-contains-II9A_XO-phasemap-q0.sameChr.left-10000bp.LEFT.bed ; 
+  FBASE=$( basename ${F} .bedpe ) ; 
+  for WINDOWS in ../windows-*bed ; do 
+    BASE=$( basename $WINDOWS .bed ) ; 
+    echo $BASE ; 
+    awk 'OFS="\t" {print $1,$2,$3"\n"$4,$5,$6}' ${F} | intersectBed -v -a - -b ${F2} | coverageBed -counts -a ${WINDOWS} -b - > ${FBASE}.counts-in-${BASE}.bedGraph ; 
+  done
+  ## right
+  F=contig_103-contains-II9A_XO-phasemap-q0.sameChr.right-10000bp.bedpe ; 
+  F2=contig_103-contains-II9A_XO-phasemap-q0.sameChr.right-10000bp.RIGHT.bed ; 
+  FBASE=$( basename ${F} .bedpe ) ; 
+  for WINDOWS in ../windows-*bed ; do 
+    BASE=$( basename $WINDOWS .bed ) ; 
+    echo $BASE ; 
+    awk 'OFS="\t" {print $1,$2,$3"\n"$4,$5,$6}' ${F} | intersectBed -v -a - -b ${F2} | coverageBed -counts -a ${WINDOWS} -b - > ${FBASE}.counts-in-${BASE}.bedGraph ; 
+  done
+
+}
+

@@ -1,0 +1,29 @@
+grablinksfrombed	
+BED	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/conserved_fly_genes/indiv/mites/input/10-CYP4720A1_5627.LOC119069782_5666.dist_1883628-mites.bed
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+BINSIZE	100000
+WINDOWS	windows-w100000-around-10-CYP4720A1_5627.LOC119069782_5666.dist_1883628-mites.bed
+CHR	X
+OSTART	59821761
+OEND	59827427
+BEDBASE	10-CYP4720A1_5627.LOC119069782_5666.dist_1883628-mites
+BEDPEBASE	XO-phasemap-q0.sameChr
+OUTPRE	10-CYP4720A1_5627.LOC119069782_5666.dist_1883628-mites_XO-phasemap-q0.sameChr
+PSEUDOCOUNT	1
+
+grablinks	
+CHR	X
+A	59821761
+B	59827427
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+
+get_count_dist_v3	
+F	10-CYP4720A1_5627.LOC119069782_5666.dist_1883628-mites_XO-phasemap-q0.sameChr.bedpe
+F2	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/conserved_fly_genes/indiv/mites/input/10-CYP4720A1_5627.LOC119069782_5666.dist_1883628-mites.bed
+WINDOWS	windows-w100000-around-10-CYP4720A1_5627.LOC119069782_5666.dist_1883628-mites.bed
+G	/mnt/sequence/jurban/base/data/sciara/phase/Bcop_v2.0/Bcop_v2.0_pkg/Bcop_v2.0.fasta.genome
+PSEUDOCOUNT	1
+TARGETLEN	5666
+TAGNAME	RP10KB
+SCALE	10000
+

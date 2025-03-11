@@ -1,0 +1,32 @@
+grablinksfrombedends	
+BED	contig_103-contains-II9A.bed
+BINSIZE	1000
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+CHR	II
+OSTART	23251626
+OEND	36349410
+
+grablinksfromleftend	
+BINSIZE	1000
+CHR	II
+START	23251626
+END	23252626
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+
+CHR	II
+A	23251626
+B	23252626
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+
+grablinksfromrightend	
+BINSIZE	1000
+CHR	II
+START	36348410
+END	36349410
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+
+CHR	II
+A	36348410
+B	36349410
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+

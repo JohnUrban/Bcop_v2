@@ -1,0 +1,26 @@
+grablinksfrombed	
+BED	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/BcTPS-support/indiv/input/final-BcTPS-models.BcTPS-1.bed
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+BINSIZE	10000
+WINDOWS	windows-w10000-around-final-BcTPS-models.BcTPS-1.bed
+CHR	IV
+OSTART	87227895
+OEND	87229913
+BEDBASE	final-BcTPS-models.BcTPS-1
+BEDPEBASE	XO-phasemap-q0.sameChr
+OUTPRE	final-BcTPS-models.BcTPS-1_XO-phasemap-q0.sameChr
+PSEUDOCOUNT	1
+
+grablinks	
+CHR	IV
+A	87227895
+B	87229913
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+
+get_count_dist_v2	
+F	final-BcTPS-models.BcTPS-1_XO-phasemap-q0.sameChr.bedpe
+F2	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/BcTPS-support/indiv/input/final-BcTPS-models.BcTPS-1.bed
+WINDOWS	windows-w10000-around-final-BcTPS-models.BcTPS-1.bed
+G	/mnt/sequence/jurban/base/data/sciara/phase/Bcop_v2.0/Bcop_v2.0_pkg/Bcop_v2.0.fasta.genome
+PSEUDOCOUNT	1
+

@@ -1,0 +1,29 @@
+grablinksfrombed	
+BED	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/conserved_fly_genes/indiv/springtails/input/06-CYP4721A4_2594.LOC119081577_2588.dist_3803064-springtails.bed
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+BINSIZE	100000
+WINDOWS	windows-w100000-around-06-CYP4721A4_2594.LOC119081577_2588.dist_3803064-springtails.bed
+CHR	III
+OSTART	30044391
+OEND	30046979
+BEDBASE	06-CYP4721A4_2594.LOC119081577_2588.dist_3803064-springtails
+BEDPEBASE	XO-phasemap-q0.sameChr
+OUTPRE	06-CYP4721A4_2594.LOC119081577_2588.dist_3803064-springtails_XO-phasemap-q0.sameChr
+PSEUDOCOUNT	1
+
+grablinks	
+CHR	III
+A	30044391
+B	30046979
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+
+get_count_dist_v3	
+F	06-CYP4721A4_2594.LOC119081577_2588.dist_3803064-springtails_XO-phasemap-q0.sameChr.bedpe
+F2	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/conserved_fly_genes/indiv/springtails/input/06-CYP4721A4_2594.LOC119081577_2588.dist_3803064-springtails.bed
+WINDOWS	windows-w100000-around-06-CYP4721A4_2594.LOC119081577_2588.dist_3803064-springtails.bed
+G	/mnt/sequence/jurban/base/data/sciara/phase/Bcop_v2.0/Bcop_v2.0_pkg/Bcop_v2.0.fasta.genome
+PSEUDOCOUNT	1
+TARGETLEN	2588
+TAGNAME	RP10KB
+SCALE	10000
+

@@ -1,0 +1,29 @@
+grablinksfrombed	
+BED	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/p450-support/indiv/mites/input/02-CYP4716A2-mites.bed
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+BINSIZE	100000
+WINDOWS	windows-w100000-around-02-CYP4716A2-mites.bed
+CHR	II
+OSTART	30710540
+OEND	30712373
+BEDBASE	02-CYP4716A2-mites
+BEDPEBASE	XO-phasemap-q0.sameChr
+OUTPRE	02-CYP4716A2-mites_XO-phasemap-q0.sameChr
+PSEUDOCOUNT	1
+
+grablinks	
+CHR	II
+A	30710540
+B	30712373
+BEDPE	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/XO-phasemap-q0.sameChr.bedpe
+
+get_count_dist_v3	
+F	02-CYP4716A2-mites_XO-phasemap-q0.sameChr.bedpe
+F2	/mnt/sequence/jurban/bcop_v2_paper/hic/analyses/Bcop_v2/XO/q0/rerun-20240122/p450-support/indiv/mites/input/02-CYP4716A2-mites.bed
+WINDOWS	windows-w100000-around-02-CYP4716A2-mites.bed
+G	/mnt/sequence/jurban/base/data/sciara/phase/Bcop_v2.0/Bcop_v2.0_pkg/Bcop_v2.0.fasta.genome
+PSEUDOCOUNT	1
+TARGETLEN	1833
+TAGNAME	RP10KB
+SCALE	10000
+

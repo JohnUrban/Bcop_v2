@@ -1,0 +1,39 @@
+grablinksfrombedends	
+BED	contig_103-contains-II9A.bed
+BINSIZE	10000
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+CHR	II
+OSTART	23251626
+OEND	36349410
+BEDBASE	contig_103-contains-II9A
+BEDPEBASE	XO-phasemap-q0.sameChr
+PRE	contig_103-contains-II9A_XO-phasemap-q0.sameChr
+LEFT	contig_103-contains-II9A_XO-phasemap-q0.sameChr.left-10000bp
+RIGHT	contig_103-contains-II9A_XO-phasemap-q0.sameChr.right-10000bp
+
+grablinksfromleftend	
+BINSIZE	10000
+CHR	II
+START	23251626
+END	23261626
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+
+grablinks	
+CHR	II
+A	23251626
+B	23261626
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+
+grablinksfromrightend	
+BINSIZE	10000
+CHR	II
+START	36339410
+END	36349410
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+
+grablinks	
+CHR	II
+A	36339410
+B	36349410
+BEDPE	../../XO-phasemap-q0.sameChr.bedpe
+
