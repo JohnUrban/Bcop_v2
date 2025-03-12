@@ -53,7 +53,7 @@ orthofinder -t 16 -a 16 -f proteomes/ 1> ortho.out 2> ortho.err
 
 
 ### STEP5: Run EGGS Processing
-- In process of writing up documentation....
+- How to use the EGGS python library to generate the plots in the paper are show in a Jupyter Notebook in the EGGS sub-directory.
 
 
 
