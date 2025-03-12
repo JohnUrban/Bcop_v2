@@ -53,7 +53,7 @@ orthofinder -t 16 -a 16 -f proteomes/ 1> ortho.out 2> ortho.err
 
 
 ### STEP5: Run EGGS Processing
-- How to use the EGGS python library to generate the plots in the paper are show in a Jupyter Notebook in the EGGS sub-directory.
+- The Jupyter Notebook in the EGGS sub-directory shows how to use the EGGS python library (EGGS.py therein) to compute expected and observed entropy and MinMax Normalized Entropy, as well as how to generate the plots in the paper.
 
 
 
